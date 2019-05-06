@@ -3,7 +3,7 @@ import * as vscode from "vscode";
 
 export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
-    vscode.commands.registerCommand("react-webview.start", () => {
+    vscode.commands.registerCommand("pick-color", () => {
       ReactPanel.createOrShow(context.extensionPath);
     })
   );
@@ -18,7 +18,7 @@ class ReactPanel {
    */
   public static currentPanel: ReactPanel | undefined;
 
-  private static readonly viewType = "react";
+  private static readonly viewType = "color-pick";
 
   private readonly _panel: vscode.WebviewPanel;
   private readonly _extensionPath: string;
@@ -45,11 +45,10 @@ class ReactPanel {
   private constructor(extensionPath: string, column: vscode.ViewColumn) {
     this._extensionPath = extensionPath;
     this._openedFromEditor = vscode.window.activeTextEditor;
-    console.log("in constructor");
     // Create and show a new webview panel
     this._panel = vscode.window.createWebviewPanel(
       ReactPanel.viewType,
-      "React",
+      "Color Pick",
       column,
       {
         // Enable javascript in the webview
@@ -73,12 +72,10 @@ class ReactPanel {
     this._panel.webview.onDidReceiveMessage(
       message => {
         switch (message.command) {
-          case "alert":
-            vscode.window.showErrorMessage(message.text);
-            return;
           case "colorChanged":
-            vscode.window.showErrorMessage(message.hex);
-            this._insert(message.hex);
+            vscode.window.showInformationMessage(
+              `${message.hex} copied to clipboard`
+            );
         }
       },
       null,
@@ -103,16 +100,6 @@ class ReactPanel {
       if (x) {
         x.dispose();
       }
-    }
-  }
-
-  private _insert(text: string) {
-    const { _openedFromEditor } = this;
-    console.log("in insert");
-    if (_openedFromEditor) {
-      _openedFromEditor.edit(editBuilder => {
-        editBuilder.insert(_openedFromEditor.selection.start, text);
-      });
     }
   }
 
@@ -143,7 +130,7 @@ class ReactPanel {
 				<meta charset="utf-8">
 				<meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
 				<meta name="theme-color" content="#000000">
-				<title>React App</title>
+				<title>Color Pick</title>
 				<link rel="stylesheet" type="text/css" href="${styleUri}">
 				<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src vscode-resource: https:; script-src 'nonce-${nonce}';style-src vscode-resource: 'unsafe-inline' http: https: data:;">
 				<base href="${vscode.Uri.file(path.join(this._extensionPath, "build")).with({

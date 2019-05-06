@@ -28,9 +28,11 @@ class App extends React.Component {
           top: 0,
           width: "100%"
         }}
-        className="Color Picker"
+        className="Color Pick"
       >
         <SketchPicker
+          disableAlpha={true}
+          presetColors={[]}
           color={this.state.background}
           onChangeComplete={this.handleChangeComplete}
         />
@@ -40,11 +42,24 @@ class App extends React.Component {
 
   private handleChangeComplete(color: ColorResult) {
     this.setState({ background: color.hex });
+    copyToClipboard(color.hex);
     this.vscode.postMessage({
       command: "colorChanged",
       hex: color.hex
     });
   }
 }
+
+const copyToClipboard = (str: string) => {
+  const el = document.createElement("textarea");
+  el.value = str;
+  el.setAttribute("readonly", "");
+  el.style.position = "absolute";
+  el.style.left = "-9999px";
+  document.body.appendChild(el);
+  el.select();
+  document.execCommand("copy");
+  document.body.removeChild(el);
+};
 
 export default App;

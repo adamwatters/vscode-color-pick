@@ -1,20 +1,19 @@
 {
-  "name": "vscode-webview-react",
+  "name": "vscode-color-pick",
   "version": "0.1.0",
   "engines": {
     "vscode": "^1.23.0"
   },
-  "publisher": "rebornix",
+  "publisher": "adamwatters",
   "activationEvents": [
-    "onCommand:react-webview.start"
+    "onCommand:pick-color"
   ],
   "main": "./build/ext-src/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "react-webview.start",
-        "title": "Start React Webview",
-        "category": "React"
+        "command": "pick-color",
+        "title": "Pick Color"
       }
     ]
   },

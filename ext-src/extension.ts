@@ -23,7 +23,6 @@ class ReactPanel {
   private readonly _panel: vscode.WebviewPanel;
   private readonly _extensionPath: string;
   private _disposables: vscode.Disposable[] = [];
-  private _openedFromEditor: vscode.TextEditor | undefined;
 
   public static createOrShow(extensionPath: string) {
     const column = vscode.window.activeTextEditor
@@ -44,7 +43,6 @@ class ReactPanel {
 
   private constructor(extensionPath: string, column: vscode.ViewColumn) {
     this._extensionPath = extensionPath;
-    this._openedFromEditor = vscode.window.activeTextEditor;
     // Create and show a new webview panel
     this._panel = vscode.window.createWebviewPanel(
       ReactPanel.viewType,

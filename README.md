@@ -6,12 +6,6 @@ Open a color picker from any file with the 'Pick Color' command. For now, select
 
 ![demo animation](./demo.gif)
 
-## Release Notes
-
-### 0.1.0
-
-Initial release of VSCode Color Pick
-
 ## Contributing
 
 [Github Repository](https://github.com/adamwatters/vscode-color-pick)
@@ -26,4 +20,3 @@ yarn run build
 ```
 
 [Follow the instruction](https://github.com/rebornix/vscode-webview-react) in the VSCode docs to run the extension in a Extension Development Host
-

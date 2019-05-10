@@ -2,7 +2,7 @@
   "name": "vscode-color-pick",
   "displayName": "Color Pick",
   "icon": "pick.png",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "engines": {
     "vscode": "^1.23.0"
   },

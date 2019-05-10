@@ -71,8 +71,17 @@ class ReactPanel {
       message => {
         switch (message.command) {
           case "colorChanged":
+            const {
+              colorFormat,
+              color: {
+                rgb: { r, g, b, a },
+                hex
+              }
+            } = message;
+            const colorString =
+              colorFormat === "hex" ? hex : `rgba(${r},${g},${b},${a})`;
             vscode.window.showInformationMessage(
-              `${message.hex} copied to clipboard`
+              `${colorString} copied to clipboard`
             );
         }
       },

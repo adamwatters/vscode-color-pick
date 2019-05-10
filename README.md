@@ -2,9 +2,15 @@
 
 ## Features
 
-Open a color picker from any file with the 'Pick Color' command. For now, selected color is added to clipboard as a hex. More features coming soon!
+Open a color picker from any file with the 'Pick Color' command. Choose between #hex and rgba() format. Selected color is added to clipboard. More features coming soon!
 
 ![demo animation](./demo.gif)
+
+## Changelog
+### [0.1.0]
+- intital release: open with `Pick Color` command, copy hex to clipboard
+### [0.2.0]
+- added support for `rgba(#,#,#,#)` format
 
 ## Contributing
 

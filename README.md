@@ -1,7 +1,5 @@
 # VSCode Color Pick
 
-This extension isn't quite ready for the Marketplace, but 
-
 ## Features
 
 Open a color picker from any file with the 'Pick Color' command. For now, selected color is added to clipboard as a hex. More features coming soon!

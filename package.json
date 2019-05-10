@@ -1,10 +1,15 @@
 {
   "name": "vscode-color-pick",
+  "displayName": "Color Pick",
   "version": "0.1.0",
   "engines": {
     "vscode": "^1.23.0"
   },
-  "publisher": "adamwatters",
+  "publisher": "adam-watters",
+  "author": {
+    "email": "adamwatters11@gmail.com",
+    "name": "Adam Watters"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/adamwatters/vscode-color-pick"
@@ -21,6 +26,7 @@
       }
     ]
   },
+  "license": "MIT",
   "dependencies": {
     "@types/react-color": "^3.0.0",
     "react": "^16.3.2",

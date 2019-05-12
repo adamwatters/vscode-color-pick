@@ -117,16 +117,11 @@ class ReactPanel {
       "asset-manifest.json"
     ));
     const mainScript = manifest["main.js"];
-    const mainStyle = manifest["main.css"];
 
     const scriptPathOnDisk = vscode.Uri.file(
       path.join(this._extensionPath, "build", mainScript)
     );
     const scriptUri = scriptPathOnDisk.with({ scheme: "vscode-resource" });
-    const stylePathOnDisk = vscode.Uri.file(
-      path.join(this._extensionPath, "build", mainStyle)
-    );
-    const styleUri = stylePathOnDisk.with({ scheme: "vscode-resource" });
 
     // Use a nonce to whitelist which scripts can be run
     const nonce = getNonce();
@@ -138,7 +133,6 @@ class ReactPanel {
 				<meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
 				<meta name="theme-color" content="#000000">
 				<title>Color Pick</title>
-				<link rel="stylesheet" type="text/css" href="${styleUri}">
 				<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src vscode-resource: https:; script-src 'nonce-${nonce}';style-src vscode-resource: 'unsafe-inline' http: https: data:;">
 				<base href="${vscode.Uri.file(path.join(this._extensionPath, "build")).with({
           scheme: "vscode-resource"

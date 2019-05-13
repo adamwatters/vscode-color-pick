@@ -1,4 +1,4 @@
-![demo animation](./pick.png)
+![demo animation](./pick-small.png)
 # VSCode Color Pick
 
 ## Features
@@ -16,7 +16,7 @@ Open a color picker from any file with the 'Pick Color' command. Choose between 
 - added support for `rgba(#,#,#,#)` format
 
 ### [0.3.0]
-- persist color picker state
+- persist color picker state in globalState
 
 ## Contributing
 

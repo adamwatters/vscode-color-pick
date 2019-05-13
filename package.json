@@ -1,9 +1,9 @@
 {
   "name": "vscode-color-pick",
   "displayName": "Color Pick",
-  "description": "color picker. works everywhere, no dependencies",
+  "description": "open a color picker. works everywhere, no dependencies",
   "icon": "pick.png",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "engines": {
     "vscode": "^1.23.0"
   },

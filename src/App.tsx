@@ -1,10 +1,11 @@
 // tslint:disable:no-console
+const vscode = acquireVsCodeApi();
 import * as React from "react";
 import { ColorResult, SketchPicker } from "react-color";
 import "./App.css";
 
 class App extends React.Component {
-  public state = {
+  public state = vscode.getState() || {
     color: {
       hex: "#194D33",
       rgb: {
@@ -17,11 +18,13 @@ class App extends React.Component {
     mode: "rgba"
   };
 
-  private vscode = acquireVsCodeApi();
-
   constructor(props: {}) {
     super(props);
     this.handleChangeComplete = this.handleChangeComplete.bind(this);
+  }
+
+  public componentDidUpdate() {
+    vscode.setState(this.state);
   }
 
   public render() {
@@ -100,7 +103,7 @@ class App extends React.Component {
   private handleRGBAModeClick = () => {
     const { color } = this.state;
     copyToClipboard(this.colorStringFromState("rgba"));
-    this.vscode.postMessage({
+    vscode.postMessage({
       color,
       colorFormat: "rgba",
       command: "colorChanged"
@@ -111,7 +114,7 @@ class App extends React.Component {
   private handleHexModeClick = () => {
     const { color } = this.state;
     copyToClipboard(this.colorStringFromState("hex"));
-    this.vscode.postMessage({
+    vscode.postMessage({
       color,
       colorFormat: "hex",
       command: "colorChanged"
@@ -138,7 +141,7 @@ class App extends React.Component {
   private handleChangeComplete(color: ColorResult) {
     this.setState({ color });
     copyToClipboard(this.colorStringFromState(this.state.mode));
-    this.vscode.postMessage({
+    vscode.postMessage({
       color,
       colorFormat: this.state.mode,
       command: "colorChanged"

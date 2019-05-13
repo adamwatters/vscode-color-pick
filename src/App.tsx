@@ -5,26 +5,11 @@ import { ColorResult, SketchPicker } from "react-color";
 import "./App.css";
 
 class App extends React.Component {
-  public state = vscode.getState() || {
-    color: {
-      hex: "#194D33",
-      rgb: {
-        a: 1,
-        b: 65,
-        g: 255,
-        r: 0
-      }
-    },
-    mode: "rgba"
-  };
+  public state = INITIAL_COLOR_PICKER_DATA;
 
   constructor(props: {}) {
     super(props);
     this.handleChangeComplete = this.handleChangeComplete.bind(this);
-  }
-
-  public componentDidUpdate() {
-    vscode.setState(this.state);
   }
 
   public render() {
@@ -105,7 +90,7 @@ class App extends React.Component {
     copyToClipboard(this.colorStringFromState("rgba"));
     vscode.postMessage({
       color,
-      colorFormat: "rgba",
+      mode: "rgba",
       command: "colorChanged"
     });
     this.setState({ mode: "rgba" });
@@ -116,7 +101,7 @@ class App extends React.Component {
     copyToClipboard(this.colorStringFromState("hex"));
     vscode.postMessage({
       color,
-      colorFormat: "hex",
+      mode: "hex",
       command: "colorChanged"
     });
     this.setState({ mode: "hex" });
@@ -143,7 +128,7 @@ class App extends React.Component {
     copyToClipboard(this.colorStringFromState(this.state.mode));
     vscode.postMessage({
       color,
-      colorFormat: this.state.mode,
+      mode: this.state.mode,
       command: "colorChanged"
     });
   }

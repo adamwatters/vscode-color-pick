@@ -4,10 +4,23 @@ import * as vscode from "vscode";
 export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand("pick-color", () => {
-      ReactPanel.createOrShow(context.extensionPath);
+      ReactPanel.createOrShow(context.extensionPath, context.globalState);
     })
   );
 }
+
+const defaultState = {
+  color: {
+    hex: "#194D33",
+    rgb: {
+      a: 1,
+      b: 65,
+      g: 255,
+      r: 0
+    }
+  },
+  mode: "rgba"
+};
 
 /**
  * Manages react webview panels
@@ -22,13 +35,17 @@ class ReactPanel {
 
   private readonly _panel: vscode.WebviewPanel;
   private readonly _extensionPath: string;
+  private _globalState: vscode.Memento;
   private _disposables: vscode.Disposable[] = [];
 
-  public static createOrShow(extensionPath: string) {
+  public static async createOrShow(
+    extensionPath: string,
+    globalState: vscode.Memento
+  ) {
     const column = vscode.window.activeTextEditor
       ? vscode.window.activeTextEditor.viewColumn
       : undefined;
-
+    const initialState = await globalState.get("app");
     // If we already have a panel, show it.
     // Otherwise, create a new panel.
     if (ReactPanel.currentPanel) {
@@ -36,13 +53,21 @@ class ReactPanel {
     } else {
       ReactPanel.currentPanel = new ReactPanel(
         extensionPath,
+        globalState,
+        initialState || defaultState,
         column || vscode.ViewColumn.One
       );
     }
   }
 
-  private constructor(extensionPath: string, column: vscode.ViewColumn) {
+  private constructor(
+    extensionPath: string,
+    globalState: vscode.Memento,
+    initialState: object,
+    column: vscode.ViewColumn
+  ) {
     this._extensionPath = extensionPath;
+    this._globalState = globalState;
     // Create and show a new webview panel
     this._panel = vscode.window.createWebviewPanel(
       ReactPanel.viewType,
@@ -60,7 +85,7 @@ class ReactPanel {
     );
 
     // Set the webview's initial html content
-    this._panel.webview.html = this._getHtmlForWebview();
+    this._panel.webview.html = this._getHtmlForWebview(initialState);
 
     // Listen for when the panel is disposed
     // This happens when the user closes the panel or when the panel is closed programatically
@@ -72,14 +97,15 @@ class ReactPanel {
         switch (message.command) {
           case "colorChanged":
             const {
-              colorFormat,
+              mode,
               color: {
                 rgb: { r, g, b, a },
                 hex
               }
             } = message;
+            this._globalState.update("app", message);
             const colorString =
-              colorFormat === "hex" ? hex : `rgba(${r},${g},${b},${a})`;
+              mode === "hex" ? hex : `rgba(${r},${g},${b},${a})`;
             vscode.window.showInformationMessage(
               `${colorString} copied to clipboard`
             );
@@ -110,7 +136,7 @@ class ReactPanel {
     }
   }
 
-  private _getHtmlForWebview() {
+  private _getHtmlForWebview(initialState: {}) {
     const manifest = require(path.join(
       this._extensionPath,
       "build",
@@ -138,11 +164,12 @@ class ReactPanel {
           scheme: "vscode-resource"
         })}/">
 			</head>
-
 			<body>
 				<noscript>You need to enable JavaScript to run this app.</noscript>
-				<div id="root"></div>
-				
+        <div id="root"></div>
+        <script nonce="${nonce}" >
+          INITIAL_COLOR_PICKER_DATA = ${JSON.stringify(initialState)}
+        </script> 
 				<script nonce="${nonce}" src="${scriptUri}"></script>
 			</body>
 			</html>`;

@@ -103,7 +103,10 @@ class ReactPanel {
                 hex
               }
             } = message;
-            this._globalState.update("app", message);
+            this._globalState.update("app", {
+              color: message.color,
+              mode: message.mode
+            });
             const colorString =
               mode === "hex" ? hex : `rgba(${r},${g},${b},${a})`;
             vscode.window.showInformationMessage(

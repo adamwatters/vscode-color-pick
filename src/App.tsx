@@ -5,11 +5,15 @@ import { ColorResult, SketchPicker } from "react-color";
 import "./App.css";
 
 class App extends React.Component {
-  public state = INITIAL_COLOR_PICKER_DATA;
+  public state = vscode.getState("app") || INITIAL_COLOR_PICKER_DATA;
 
   constructor(props: {}) {
     super(props);
     this.handleChangeComplete = this.handleChangeComplete.bind(this);
+  }
+
+  public componentDidUpdate() {
+    vscode.setState(this.state);
   }
 
   public render() {

@@ -18,6 +18,9 @@ Open a color picker from any file with the 'Pick Color' command. Choose between 
 ### [0.3.0]
 - persist color picker state in globalState
 
+### [0.3.1]
+- bug fix: color state persists when color picker window is left open
+
 ## Contributing
 
 [Github Repository](https://github.com/adamwatters/vscode-color-pick)

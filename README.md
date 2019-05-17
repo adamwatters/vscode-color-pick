@@ -1,5 +1,4 @@
-![demo animation](./pick-small.png)
-# VSCode Color Pick
+# [VSCode Color Pick](https://marketplace.visualstudio.com/items?itemName=adam-watters.vscode-color-pick)
 
 ## Features
 

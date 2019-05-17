@@ -9,6 +9,9 @@ Open a color picker from any file with the 'Pick Color' command. Choose between 
 
 ## Changelog
 
+### [0.3.2]
+- add .vscodeignore, reduced extension size by several orders of magnitude
+
 ### [0.3.1]
 - bug fix: color state persists when color picker window is left open
 

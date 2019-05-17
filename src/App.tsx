@@ -2,7 +2,6 @@
 const vscode = acquireVsCodeApi();
 import * as React from "react";
 import { ColorResult, SketchPicker } from "react-color";
-import "./App.css";
 
 class App extends React.Component {
   public state = vscode.getState("app") || INITIAL_COLOR_PICKER_DATA;

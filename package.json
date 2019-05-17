@@ -3,7 +3,7 @@
   "displayName": "Color Pick",
   "description": "open a color picker. works everywhere, no dependencies",
   "icon": "pick.png",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "engines": {
     "vscode": "^1.23.0"
   },

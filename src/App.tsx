@@ -67,6 +67,18 @@ class App extends React.Component {
               {` copy as #hex`}
             </div>
           </Card>
+          <Card>
+              <a
+                style={{
+                  textDecoration: "none",
+                  borderStyle: "none",
+                  outline: "none"
+                }} 
+                href="https://github.com/adamwatters/vscode-color-pick"
+              >
+                  Github code
+              </a>
+          </Card>
         </div>
       </div>
     );

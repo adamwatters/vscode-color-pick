@@ -1,3 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Card component matches snapshot 1`] = `undefined`;
+exports[`Card component matches snapshot 1`] = `
+<div
+  style={
+    Object {
+      "alignItems": "flex-start",
+      "background": "white",
+      "borderRadius": "4px",
+      "boxShadow": "rgba(0, 0, 0, 0.15) 0px 0px 0px 1px, rgba(0, 0, 0, 0.15) 0px 8px 16px",
+      "boxSizing": "initial",
+      "color": "black",
+      "display": "flex",
+      "flexDirection": "column",
+      "fontSize": "16px",
+      "justifyContent": "center",
+      "marginTop": "16px",
+      "padding": "10px",
+      "width": "200px",
+    }
+  }
+>
+  <p>
+    Card
+  </p>
+</div>
+`;

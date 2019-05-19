@@ -2,6 +2,7 @@
 const vscode = acquireVsCodeApi();
 import * as React from "react";
 import { ColorResult, SketchPicker } from "react-color";
+import Card from "./Card";
 
 class App extends React.Component {
   public state = vscode.getState("app") || INITIAL_COLOR_PICKER_DATA;
@@ -48,24 +49,7 @@ class App extends React.Component {
             color={this.state.color.rgb}
             onChangeComplete={this.handleChangeComplete}
           />
-          <div
-            style={{
-              alignItems: "flex-start",
-              color: "black",
-              background: "white",
-              borderRadius: "4px",
-              boxShadow:
-                "rgba(0, 0, 0, 0.15) 0px 0px 0px 1px, rgba(0, 0, 0, 0.15) 0px 8px 16px",
-              boxSizing: "initial",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              marginTop: "16px",
-              padding: "10px",
-              width: "200px",
-              fontSize: "16px"
-            }}
-          >
+          <Card>
             <div>
               <input
                 type="checkbox"
@@ -82,7 +66,7 @@ class App extends React.Component {
               />
               {` copy as #hex`}
             </div>
-          </div>
+          </Card>
         </div>
       </div>
     );

@@ -9,18 +9,23 @@ Open a color picker from any file with the 'Pick Color' command. Choose between 
 ## Changelog
 
 ### [0.3.2]
+
 - add .vscodeignore, reduced extension size by several orders of magnitude
 
 ### [0.3.1]
+
 - bug fix: color state persists when color picker window is left open
 
 ### [0.3.0]
+
 - persist color picker state in globalState
 
 ### [0.2.0]
+
 - added support for `rgba(#,#,#,#)` format
 
 ### [0.1.0]
+
 - intital release: open with `Pick Color` command, copy hex to clipboard
 
 ## Contributing

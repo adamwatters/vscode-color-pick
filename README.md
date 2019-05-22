@@ -16,7 +16,7 @@ Open a color picker from any file with the 'Pick Color' command. Choose between 
 
 ### [0.3.2]
 
-- add .vscodeignore, reduced extension size by several orders of magnitude
+- added .vscodeignore, reduced extension
 
 ### [0.3.1]
 

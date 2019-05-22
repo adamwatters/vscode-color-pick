@@ -26,7 +26,7 @@ export default (props: IGithubLinkProps) => {
           {
             position: "relative",
             top: "22px",
-            left: "57px",
+            left: "65px",
             height: "31.77px",
             width: "32.58px"
           }

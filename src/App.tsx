@@ -3,6 +3,8 @@ const vscode = acquireVsCodeApi();
 import * as React from "react";
 import { ColorResult, SketchPicker } from "react-color";
 import Card from "./Card";
+import config from "./config";
+import GithubLink from "./GithubLink";
 
 class App extends React.Component {
   public state = vscode.getState("app") || INITIAL_COLOR_PICKER_DATA;
@@ -44,6 +46,7 @@ class App extends React.Component {
           }}
           className="Color Pick"
         >
+          <GithubLink link={config.repoUrl} />
           <SketchPicker
             presetColors={[]}
             color={this.state.color.rgb}
@@ -66,18 +69,6 @@ class App extends React.Component {
               />
               {` copy as #hex`}
             </div>
-          </Card>
-          <Card>
-              <a
-                style={{
-                  textDecoration: "none",
-                  borderStyle: "none",
-                  outline: "none"
-                }} 
-                href="https://github.com/adamwatters/vscode-color-pick"
-              >
-                  Github code
-              </a>
           </Card>
         </div>
       </div>

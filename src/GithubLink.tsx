@@ -6,7 +6,6 @@ interface IGithubLinkProps {
 }
 
 export default (props: IGithubLinkProps) => {
-  const boxHeight = "120px";
   return (
     <div
       style={
@@ -14,7 +13,7 @@ export default (props: IGithubLinkProps) => {
           width: 0,
           height: 0,
           borderStyle: "solid",
-          borderWidth: `0 ${boxHeight} ${boxHeight} 0`,
+          borderWidth: "0 120px 120px 0",
           borderColor: "transparent #000 transparent transparent",
           position: "absolute",
           top: 0,
@@ -26,14 +25,20 @@ export default (props: IGithubLinkProps) => {
         style={
           {
             position: "relative",
-            top: 0,
-            right: 0,
-            height: boxHeight,
-            width: boxHeight
+            top: "22px",
+            left: "57px",
+            height: "31.77px",
+            width: "32.58px"
           }
         }
       >
-        <a href={props.link}>
+        <a style={
+          {
+            borderStyle: "none",
+            outline: "none"
+          }
+        }
+        href={props.link}>
           <Octocat repoLink={props.link}/>
         </a>
       </div>

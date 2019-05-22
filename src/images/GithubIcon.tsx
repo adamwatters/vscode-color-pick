@@ -5,7 +5,7 @@ interface IIconProps {
 }
 
 export default (props: IIconProps) => (
-  <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="-45 -15 100 100">
+  <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32.58 31.77">
     <title>{props.repoLink}</title>
     <path style={{
       fill: "#fff",

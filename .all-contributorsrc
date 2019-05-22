@@ -1,0 +1,25 @@
+{
+  "projectName": "vscode-color-pick",
+  "projectOwner": "adamwatters",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitConvention": "none",
+  "contributors": [
+    {
+      "login": "brayovsky",
+      "name": "Muthui Muthengi",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/19430730?v=4",
+      "profile": "https://github.com/brayovsky",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7
+}

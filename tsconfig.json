@@ -16,7 +16,8 @@
     "noImplicitAny": true,
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": true
+    "noUnusedLocals": true,
+    "allowSyntheticDefaultImports": true
   },
   "exclude": [
     "node_modules",
@@ -25,7 +26,7 @@
     "acceptance-tests",
     "webpack",
     "jest",
-	"src/setupTests.ts",
-	".vscode-test"
+    "src/setupTests.ts",
+    ".vscode-test"
   ]
 }

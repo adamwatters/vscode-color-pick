@@ -2,25 +2,36 @@
 
 ## Features
 
-Open a color picker from any file with the 'Pick Color' command. Choose between #hex and rgba() format. Selected color is added to clipboard. More features coming soon!
+Open a color picker from any file with the 'Pick Color' command. Choose between #hex and rgba() format. Selected color is added to clipboard. Search over 18,000 colors from [color-names](https://github.com/meodai/color-names) 💕
 
-![demo animation](./demo.gif)
+![main functionality animation](./demo.gif)
+
+![search animation](./demo2.gif)
 
 ## Changelog
 
+### [0.4.0]
+
+- added color dictionary search
+
 ### [0.3.2]
-- add .vscodeignore, reduced extension size by several orders of magnitude
+
+- added .vscodeignore, reduced extension
 
 ### [0.3.1]
+
 - bug fix: color state persists when color picker window is left open
 
 ### [0.3.0]
+
 - persist color picker state in globalState
 
 ### [0.2.0]
+
 - added support for `rgba(#,#,#,#)` format
 
 ### [0.1.0]
+
 - intital release: open with `Pick Color` command, copy hex to clipboard
 
 ## Contributing

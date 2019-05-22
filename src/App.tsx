@@ -2,6 +2,9 @@
 const vscode = acquireVsCodeApi();
 import React from "react";
 import { ColorResult, SketchPicker } from "react-color";
+import Card from "./Card";
+import config from "./config";
+import GithubLink from "./GithubLink";
 import Search from "./Search";
 
 class App extends React.Component {
@@ -75,29 +78,13 @@ class App extends React.Component {
             }}
             className="Color Pick"
           >
+            <GithubLink link={config.repoUrl} />
             <SketchPicker
               presetColors={[]}
               color={this.state.color.rgb}
               onChangeComplete={this.handleColorChange}
             />
-            <div
-              style={{
-                alignItems: "flex-start",
-                color: "black",
-                background: "white",
-                borderRadius: "4px",
-                boxShadow:
-                  "rgba(0, 0, 0, 0.15) 0px 0px 0px 1px, rgba(0, 0, 0, 0.15) 0px 8px 16px",
-                boxSizing: "initial",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                marginTop: "16px",
-                padding: "10px",
-                width: "200px",
-                fontSize: "16px"
-              }}
-            >
+            <Card>
               <div>
                 <input
                   type="checkbox"
@@ -114,9 +101,9 @@ class App extends React.Component {
                 />
                 {` copy as #hex`}
               </div>
-            </div>
-          </div>
+          </Card>
         </div>
+      </div>
       </div>
     );
   }

@@ -1,14 +1,18 @@
 // tslint:disable:no-console
 const vscode = acquireVsCodeApi();
-import * as React from "react";
+import React from "react";
 import { ColorResult, SketchPicker } from "react-color";
+import Search from "./Search";
 
 class App extends React.Component {
-  public state = vscode.getState("app") || INITIAL_COLOR_PICKER_DATA;
+  public state = {
+    search: "",
+    ...(vscode.getState("app") || INITIAL_COLOR_PICKER_DATA)
+  };
 
   constructor(props: {}) {
     super(props);
-    this.handleChangeComplete = this.handleChangeComplete.bind(this);
+    this.handleColorChange = this.handleColorChange.bind(this);
   }
 
   public componentDidUpdate() {
@@ -19,74 +23,107 @@ class App extends React.Component {
     return (
       <div
         style={{
-          bottom: 0,
           position: "absolute",
           top: 0,
-          width: "100%",
-          backgroundImage:
-            "linear-gradient(45deg, #808080 25%, transparent 25%), linear-gradient(-45deg, #808080 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #808080 75%), linear-gradient(-45deg, transparent 75%, #808080 75%)",
-          backgroundSize: "20px 20px",
-          backgroundPosition: "0 0, 0 10px, 10px -10px, -10px 0px"
+          right: 0,
+          bottom: 0,
+          left: 0,
+          overflow: "hidden"
         }}
       >
         <div
           style={{
-            alignItems: "center",
-            background: this.rgbaStringFromState(),
-            bottom: 0,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
+            zIndex: 2,
             position: "absolute",
             top: 0,
-            width: "100%"
+            bottom: -10,
+            overflow: "scroll"
           }}
-          className="Color Pick"
         >
-          <SketchPicker
-            presetColors={[]}
-            color={this.state.color.rgb}
-            onChangeComplete={this.handleChangeComplete}
+          <Search
+            setSearch={this.setSearch}
+            search={this.state.search}
+            searchSelect={this.handleColorChange}
           />
+        </div>
+        <div
+          style={{
+            bottom: 0,
+            position: "absolute",
+            top: 0,
+            width: "100%",
+            backgroundImage:
+              "linear-gradient(45deg, #808080 25%, transparent 25%), linear-gradient(-45deg, #808080 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #808080 75%), linear-gradient(-45deg, transparent 75%, #808080 75%)",
+            backgroundSize: "20px 20px",
+            backgroundPosition: "0 0, 0 10px, 10px -10px, -10px 0px",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center"
+          }}
+        >
           <div
             style={{
-              alignItems: "flex-start",
-              color: "black",
-              background: "white",
-              borderRadius: "4px",
-              boxShadow:
-                "rgba(0, 0, 0, 0.15) 0px 0px 0px 1px, rgba(0, 0, 0, 0.15) 0px 8px 16px",
-              boxSizing: "initial",
+              alignItems: "center",
+              background: this.rgbaStringFromState(),
+              bottom: 0,
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
-              marginTop: "16px",
-              padding: "10px",
-              width: "200px",
-              fontSize: "16px"
+              position: "absolute",
+              top: 0,
+              width: "100%"
             }}
+            className="Color Pick"
           >
-            <div>
-              <input
-                type="checkbox"
-                checked={this.state.mode === "rgba"}
-                onClick={this.handleRGBAModeClick}
-              />
-              {` copy as rgba()`}
-            </div>
-            <div>
-              <input
-                type="checkbox"
-                checked={this.state.mode === "hex"}
-                onClick={this.handleHexModeClick}
-              />
-              {` copy as #hex`}
+            <SketchPicker
+              presetColors={[]}
+              color={this.state.color.rgb}
+              onChangeComplete={this.handleColorChange}
+            />
+            <div
+              style={{
+                alignItems: "flex-start",
+                color: "black",
+                background: "white",
+                borderRadius: "4px",
+                boxShadow:
+                  "rgba(0, 0, 0, 0.15) 0px 0px 0px 1px, rgba(0, 0, 0, 0.15) 0px 8px 16px",
+                boxSizing: "initial",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                marginTop: "16px",
+                padding: "10px",
+                width: "200px",
+                fontSize: "16px"
+              }}
+            >
+              <div>
+                <input
+                  type="checkbox"
+                  checked={this.state.mode === "rgba"}
+                  onClick={this.handleRGBAModeClick}
+                />
+                {` copy as rgba()`}
+              </div>
+              <div>
+                <input
+                  type="checkbox"
+                  checked={this.state.mode === "hex"}
+                  onClick={this.handleHexModeClick}
+                />
+                {` copy as #hex`}
+              </div>
             </div>
           </div>
         </div>
       </div>
     );
   }
+
+  private setSearch = (s: string) => {
+    this.setState({ search: s });
+  };
 
   private handleRGBAModeClick = () => {
     const { color } = this.state;
@@ -126,7 +163,7 @@ class App extends React.Component {
     }
   }
 
-  private handleChangeComplete(color: ColorResult) {
+  private handleColorChange(color: ColorResult) {
     this.setState({ color });
     copyToClipboard(this.colorStringFromState(this.state.mode));
     vscode.postMessage({

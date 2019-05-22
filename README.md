@@ -2,11 +2,17 @@
 
 ## Features
 
-Open a color picker from any file with the 'Pick Color' command. Choose between #hex and rgba() format. Selected color is added to clipboard. More features coming soon!
+Open a color picker from any file with the 'Pick Color' command. Choose between #hex and rgba() format. Selected color is added to clipboard. Search over 18,000 colors from [color-names](https://github.com/meodai/color-names) 💕
 
-![demo animation](./demo.gif)
+![main functionality animation](./demo.gif)
+
+![search animation](./demo2.gif)
 
 ## Changelog
+
+### [0.4.0]
+
+- added color dictionary search
 
 ### [0.3.2]
 

@@ -26,7 +26,18 @@
         "command": "pick-color",
         "title": "Pick Color"
       }
-    ]
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "Color Pick configuration",
+      "properties": {
+        "color-pick.analytics": {
+          "type": "boolean",
+          "default": false,
+          "description": "Allow Color Pick to collect color search events and color selection events."
+        }
+      }
+    }
   },
   "license": "MIT",
   "dependencies": {

@@ -1,9 +1,9 @@
 {
   "name": "vscode-color-pick",
   "displayName": "Color Pick",
-  "description": "Open a color picker from any file. Works in JSX. Supports HEX or rgba(). No dependencies.",
+  "description": "Open a color picker from any file. Works in JSX. Supports hex or rgba. No dependencies.",
   "icon": "pick.png",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "engines": {
     "vscode": "^1.23.0"
   },

@@ -31,6 +31,14 @@ export function deactivate() {
   reporter.dispose();
 }
 
+const shouldUseTelemetry = (): boolean => {
+  return (
+    process.env.VSCODE_DEBUG_MODE === "true" ||
+    vscode.workspace.getConfiguration().get("color-pick.analytics") ||
+    false
+  );
+};
+
 const defaultState = {
   color: {
     hex: "#194D33",
@@ -122,10 +130,11 @@ class ReactPanel {
         switch (message.command) {
           case "search":
             const { searchString } = message;
-            reporter.sendTelemetryEvent("search", {
-              searchString,
-              environment
-            });
+            shouldUseTelemetry() &&
+              reporter.sendTelemetryEvent("search", {
+                searchString,
+                environment
+              });
           case "colorChanged":
             const {
               mode,
@@ -134,12 +143,13 @@ class ReactPanel {
                 hex
               }
             } = message;
-            reporter.sendTelemetryEvent("colorChanged", {
-              environment,
-              mode,
-              hex,
-              rgb: `${r},${g},${b},${a}`
-            });
+            shouldUseTelemetry() &&
+              reporter.sendTelemetryEvent("colorChanged", {
+                environment,
+                mode,
+                hex,
+                rgb: `${r},${g},${b},${a}`
+              });
             this._globalState.update("app", {
               color: message.color,
               mode: message.mode
@@ -192,7 +202,8 @@ class ReactPanel {
     // Use a nonce to whitelist which scripts can be run
     const nonce = getNonce();
 
-    reporter.sendTelemetryEvent("extensionStarted", { environment });
+    shouldUseTelemetry() &&
+      reporter.sendTelemetryEvent("extensionStarted", { environment });
 
     return `<!DOCTYPE html>
 			<html lang="en">

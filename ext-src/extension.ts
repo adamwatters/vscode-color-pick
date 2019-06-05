@@ -5,10 +5,16 @@ import TelemetryReporter from "vscode-extension-telemetry";
 let reporter: TelemetryReporter;
 
 export function activate(context: vscode.ExtensionContext) {
-  const extensionId = "color-pick";
-  const version = "0";
+  const extensionId = "adam-watters.vscode-color-pick";
   const key = "4a812e02-fb45-447f-a2bc-42bf98535773";
-  reporter = new TelemetryReporter(extensionId, version, key);
+  const extension = vscode.extensions.getExtension(extensionId) || {
+    packageJSON: "undefined"
+  };
+  reporter = new TelemetryReporter(
+    extensionId,
+    extension.packageJSON.version,
+    key
+  );
   context.subscriptions.push(
     vscode.commands.registerCommand("pick-color", () => {
       ReactPanel.createOrShow(
@@ -177,6 +183,8 @@ class ReactPanel {
 
     // Use a nonce to whitelist which scripts can be run
     const nonce = getNonce();
+
+    reporter.sendTelemetryEvent("extensionStarted");
 
     return `<!DOCTYPE html>
 			<html lang="en">

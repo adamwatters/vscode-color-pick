@@ -1,12 +1,27 @@
 import * as path from "path";
 import * as vscode from "vscode";
+import TelemetryReporter from "vscode-extension-telemetry";
+
+let reporter: TelemetryReporter;
 
 export function activate(context: vscode.ExtensionContext) {
+  const extensionId = "color-pick";
+  const version = "0";
+  const key = "4a812e02-fb45-447f-a2bc-42bf98535773";
+  reporter = new TelemetryReporter(extensionId, version, key);
   context.subscriptions.push(
     vscode.commands.registerCommand("pick-color", () => {
-      ReactPanel.createOrShow(context.extensionPath, context.globalState);
+      ReactPanel.createOrShow(
+        context.extensionPath,
+        context.globalState,
+        reporter
+      );
     })
   );
+}
+
+export function deactivate() {
+  reporter.dispose();
 }
 
 const defaultState = {
@@ -40,7 +55,8 @@ class ReactPanel {
 
   public static async createOrShow(
     extensionPath: string,
-    globalState: vscode.Memento
+    globalState: vscode.Memento,
+    reporter: TelemetryReporter
   ) {
     const column = vscode.window.activeTextEditor
       ? vscode.window.activeTextEditor.viewColumn
@@ -55,7 +71,8 @@ class ReactPanel {
         extensionPath,
         globalState,
         initialState || defaultState,
-        column || vscode.ViewColumn.One
+        column || vscode.ViewColumn.One,
+        reporter
       );
     }
   }
@@ -64,7 +81,8 @@ class ReactPanel {
     extensionPath: string,
     globalState: vscode.Memento,
     initialState: object,
-    column: vscode.ViewColumn
+    column: vscode.ViewColumn,
+    reporter: TelemetryReporter
   ) {
     this._extensionPath = extensionPath;
     this._globalState = globalState;
@@ -103,6 +121,11 @@ class ReactPanel {
                 hex
               }
             } = message;
+            reporter.sendTelemetryEvent("colorChanged", {
+              mode,
+              hex,
+              rgb: `${r},${g},${b},${a}`
+            });
             this._globalState.update("app", {
               color: message.color,
               mode: message.mode

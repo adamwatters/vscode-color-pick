@@ -1,7 +1,8 @@
 import * as path from "path";
 import * as vscode from "vscode";
 import TelemetryReporter from "vscode-extension-telemetry";
-
+const environment =
+  process.env.VSCODE_DEBUG_MODE === "true" ? "development" : "production";
 let reporter: TelemetryReporter;
 
 export function activate(context: vscode.ExtensionContext) {
@@ -119,6 +120,12 @@ class ReactPanel {
     this._panel.webview.onDidReceiveMessage(
       message => {
         switch (message.command) {
+          case "search":
+            const { searchString } = message;
+            reporter.sendTelemetryEvent("search", {
+              searchString,
+              environment
+            });
           case "colorChanged":
             const {
               mode,
@@ -128,6 +135,7 @@ class ReactPanel {
               }
             } = message;
             reporter.sendTelemetryEvent("colorChanged", {
+              environment,
               mode,
               hex,
               rgb: `${r},${g},${b},${a}`
@@ -184,7 +192,7 @@ class ReactPanel {
     // Use a nonce to whitelist which scripts can be run
     const nonce = getNonce();
 
-    reporter.sendTelemetryEvent("extensionStarted");
+    reporter.sendTelemetryEvent("extensionStarted", { environment });
 
     return `<!DOCTYPE html>
 			<html lang="en">

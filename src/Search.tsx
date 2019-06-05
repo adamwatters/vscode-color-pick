@@ -1,6 +1,8 @@
+// tslint:disable:no-console
 import convert from "color-convert";
 import namedColors from "color-name-list";
 import Fuse from "fuse.js";
+import { debounce } from "lodash";
 import React, { useState } from "react";
 import { ColorResult } from "react-color";
 
@@ -61,16 +63,34 @@ const Color = (props: IProps) => {
   );
 };
 
+interface IVscode {
+  postMessage: (message: object) => void;
+}
+
 interface ISearchProps {
   search: string;
   setSearch: (s: string) => void;
   searchSelect: (color: ColorResult) => void;
+  vscode: IVscode;
 }
 
+const dispatchSearchEvent = (vscode: IVscode, searchString: string) => {
+  if (searchString !== "") {
+    vscode.postMessage({
+      searchString,
+      command: "search"
+    });
+  }
+};
+
+const debouncedSearchEvent = debounce(dispatchSearchEvent, 500);
+
 const Search = (props: ISearchProps) => {
-  const { search, setSearch, searchSelect } = props;
+  const { search, setSearch, searchSelect, vscode } = props;
+
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
+    debouncedSearchEvent(vscode, value);
     setSearch(value);
   };
 

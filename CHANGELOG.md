@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.6.0]
+
+- added settings
+- added telemetry
+
 ## [0.5.0]
 
 - added github link

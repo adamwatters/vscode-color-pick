@@ -1,13 +1,43 @@
 import * as path from "path";
 import * as vscode from "vscode";
+import TelemetryReporter from "vscode-extension-telemetry";
+const environment =
+  process.env.VSCODE_DEBUG_MODE === "true" ? "development" : "production";
+let reporter: TelemetryReporter;
 
 export function activate(context: vscode.ExtensionContext) {
+  const extensionId = "adam-watters.vscode-color-pick";
+  const key = "4a812e02-fb45-447f-a2bc-42bf98535773";
+  const extension = vscode.extensions.getExtension(extensionId) || {
+    packageJSON: "undefined"
+  };
+  reporter = new TelemetryReporter(
+    extensionId,
+    extension.packageJSON.version,
+    key
+  );
   context.subscriptions.push(
     vscode.commands.registerCommand("pick-color", () => {
-      ReactPanel.createOrShow(context.extensionPath, context.globalState);
+      ReactPanel.createOrShow(
+        context.extensionPath,
+        context.globalState,
+        reporter
+      );
     })
   );
 }
+
+export function deactivate() {
+  reporter.dispose();
+}
+
+const shouldUseTelemetry = (): boolean => {
+  return (
+    process.env.VSCODE_DEBUG_MODE === "true" ||
+    vscode.workspace.getConfiguration().get("color-pick.analytics") ||
+    false
+  );
+};
 
 const defaultState = {
   color: {
@@ -40,7 +70,8 @@ class ReactPanel {
 
   public static async createOrShow(
     extensionPath: string,
-    globalState: vscode.Memento
+    globalState: vscode.Memento,
+    reporter: TelemetryReporter
   ) {
     const column = vscode.window.activeTextEditor
       ? vscode.window.activeTextEditor.viewColumn
@@ -55,7 +86,8 @@ class ReactPanel {
         extensionPath,
         globalState,
         initialState || defaultState,
-        column || vscode.ViewColumn.One
+        column || vscode.ViewColumn.One,
+        reporter
       );
     }
   }
@@ -64,7 +96,8 @@ class ReactPanel {
     extensionPath: string,
     globalState: vscode.Memento,
     initialState: object,
-    column: vscode.ViewColumn
+    column: vscode.ViewColumn,
+    reporter: TelemetryReporter
   ) {
     this._extensionPath = extensionPath;
     this._globalState = globalState;
@@ -95,6 +128,13 @@ class ReactPanel {
     this._panel.webview.onDidReceiveMessage(
       message => {
         switch (message.command) {
+          case "search":
+            const { searchString } = message;
+            shouldUseTelemetry() &&
+              reporter.sendTelemetryEvent("search", {
+                searchString,
+                environment
+              });
           case "colorChanged":
             const {
               mode,
@@ -103,6 +143,13 @@ class ReactPanel {
                 hex
               }
             } = message;
+            shouldUseTelemetry() &&
+              reporter.sendTelemetryEvent("colorChanged", {
+                environment,
+                mode,
+                hex,
+                rgb: `${r},${g},${b},${a}`
+              });
             this._globalState.update("app", {
               color: message.color,
               mode: message.mode
@@ -154,6 +201,9 @@ class ReactPanel {
 
     // Use a nonce to whitelist which scripts can be run
     const nonce = getNonce();
+
+    shouldUseTelemetry() &&
+      reporter.sendTelemetryEvent("extensionStarted", { environment });
 
     return `<!DOCTYPE html>
 			<html lang="en">

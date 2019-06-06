@@ -44,6 +44,7 @@ class App extends React.Component {
           }}
         >
           <Search
+            vscode={vscode}
             setSearch={this.setSearch}
             search={this.state.search}
             searchSelect={this.handleColorChange}
@@ -101,9 +102,9 @@ class App extends React.Component {
                 />
                 {` copy as #hex`}
               </div>
-          </Card>
+            </Card>
+          </div>
         </div>
-      </div>
       </div>
     );
   }

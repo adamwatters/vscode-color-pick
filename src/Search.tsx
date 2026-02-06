@@ -1,43 +1,25 @@
-// tslint:disable:no-console
 import convert from "color-convert";
-import namedColors from "color-name-list";
+import colornames from "color-name-list/dist/colornames.esm.mjs";
 import Fuse from "fuse.js";
-import { debounce } from "lodash";
 import React, { useState } from "react";
 import { ColorResult } from "react-color";
 
-const fuse = new Fuse(namedColors, {
+const fuse = new Fuse(colornames, {
   shouldSort: true,
   threshold: 0.2,
-  location: 0,
   distance: 100,
-  maxPatternLength: 16,
   minMatchCharLength: 1,
-  keys: ["name"]
+  keys: ["name"],
 });
 
-interface IProps {
+interface ColorProps {
   hex: string;
   name: string;
   onSelect: (hex: string) => void;
 }
 
-const Color = (props: IProps) => {
+const Color = (props: ColorProps) => {
   const [focus, setFocus] = useState(false);
-  const onFocus = () => {
-    setFocus(true);
-  };
-  const onBlur = () => {
-    setFocus(false);
-  };
-  const onClick = () => {
-    props.onSelect(props.hex);
-  };
-  const onKeyDown = (e: { key: string }) => {
-    if (e.key === "Enter") {
-      props.onSelect(props.hex);
-    }
-  };
   return (
     <div
       tabIndex={0}
@@ -51,50 +33,34 @@ const Color = (props: IProps) => {
         justifyContent: "center",
         alignItems: "center",
         transition: "height .2s",
-        cursor: "pointer"
+        cursor: "pointer",
       }}
-      onClick={onClick}
-      onFocus={onFocus}
-      onBlur={onBlur}
-      onKeyDown={onKeyDown}
+      onClick={() => props.onSelect(props.hex)}
+      onFocus={() => setFocus(true)}
+      onBlur={() => setFocus(false)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") props.onSelect(props.hex);
+      }}
     >
       {props.name}
     </div>
   );
 };
 
-interface IVscode {
-  postMessage: (message: object) => void;
-}
-
-interface ISearchProps {
+interface SearchProps {
   search: string;
   setSearch: (s: string) => void;
   searchSelect: (color: ColorResult) => void;
-  vscode: IVscode;
 }
 
-const dispatchSearchEvent = (vscode: IVscode, searchString: string) => {
-  if (searchString !== "") {
-    vscode.postMessage({
-      searchString,
-      command: "search"
-    });
-  }
-};
-
-const debouncedSearchEvent = debounce(dispatchSearchEvent, 500);
-
-const Search = (props: ISearchProps) => {
-  const { search, setSearch, searchSelect, vscode } = props;
+const Search = (props: SearchProps) => {
+  const { search, setSearch, searchSelect } = props;
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    debouncedSearchEvent(vscode, value);
-    setSearch(value);
+    setSearch(e.target.value);
   };
 
-  const colors = fuse.search(search).slice(0, 30);
+  const colors = fuse.search(search, { limit: 30 }).map((r) => r.item);
 
   const selectColor = (hex: string) => {
     const [r, g, b] = convert.hex.rgb(hex);
@@ -102,7 +68,7 @@ const Search = (props: ISearchProps) => {
     searchSelect({
       hex,
       rgb: { r, g, b, a: 1 },
-      hsl: { h, s, l }
+      hsl: { h, s, l },
     });
     setSearch("");
   };
@@ -118,8 +84,8 @@ const Search = (props: ISearchProps) => {
         placeholder="Search 18,000+ Color Names"
       />
       <div>
-        {colors.map((color: any) => (
-          <Color onSelect={selectColor} {...color} />
+        {colors.map((color) => (
+          <Color key={color.hex} onSelect={selectColor} {...color} />
         ))}
       </div>
     </div>

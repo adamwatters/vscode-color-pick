@@ -1,4 +1,4 @@
-declare module "color-name-list" {
-  const NamesList: any;
-  export default NamesList;
+declare module "color-name-list/dist/colornames.esm.mjs" {
+  const colornames: Array<{ name: string; hex: string }>;
+  export default colornames;
 }

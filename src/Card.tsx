@@ -1,10 +1,10 @@
-import * as React from "react";
+import React from "react";
 
-interface ICardProps {
-  children: {};
+interface CardProps {
+  children: React.ReactNode;
 }
 
-export default (props: ICardProps) => (
+const Card = (props: CardProps) => (
   <div
     style={{
       alignItems: "flex-start",
@@ -20,9 +20,11 @@ export default (props: ICardProps) => (
       marginTop: "16px",
       padding: "10px",
       width: "200px",
-      fontSize: "16px"
+      fontSize: "16px",
     }}
   >
     {props.children}
   </div>
 );
+
+export default Card;

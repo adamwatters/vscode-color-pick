@@ -12,16 +12,16 @@ Open a color picker from any file with the 'Pick Color' command. Choose between 
 
 [Github Repository](https://github.com/adamwatters/vscode-color-pick)
 
-This project uses [vscode-webview-react](https://github.com/rebornix/vscode-webview-react).
+The webview UI is built with React and bundled with Vite. The extension backend is bundled with esbuild.
 
-To start developing
+To start developing:
 
 ```
 yarn install
-yarn run build
+yarn build
 ```
 
-[Follow the instruction](https://github.com/rebornix/vscode-webview-react) in the VSCode docs to run the extension in a Extension Development Host
+Then press F5 in VSCode to launch the Extension Development Host.
 
 ## Contributors ✨
 

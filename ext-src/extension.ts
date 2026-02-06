@@ -98,9 +98,11 @@ class ReactPanel {
             });
             const colorString =
               mode === "hex" ? hex : `rgba(${r},${g},${b},${a})`;
-            vscode.window.showInformationMessage(
-              `${colorString} copied to clipboard`
-            );
+            vscode.env.clipboard.writeText(colorString).then(() => {
+              vscode.window.showInformationMessage(
+                `${colorString} copied to clipboard`
+              );
+            });
             break;
           }
         }

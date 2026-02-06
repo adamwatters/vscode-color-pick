@@ -1,6 +1,6 @@
 const vscode = acquireVsCodeApi();
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ColorResult, SketchPicker } from "react-color";
 import Card from "./Card";
 import config from "./config";
@@ -17,6 +17,18 @@ const App = () => {
   const [color, setColor] = useState(initialState.color);
   const [mode, setMode] = useState(initialState.mode);
   const [search, setSearch] = useState("");
+  const [copiedMessage, setCopiedMessage] = useState("");
+  const [copiedVisible, setCopiedVisible] = useState(false);
+  const fadeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const showCopiedMessage = (colorStr: string) => {
+    if (fadeTimerRef.current) clearTimeout(fadeTimerRef.current);
+    setCopiedMessage(colorStr);
+    setCopiedVisible(true);
+    fadeTimerRef.current = setTimeout(() => {
+      setCopiedVisible(false);
+    }, 4000);
+  };
 
   useEffect(() => {
     vscode.setState({ color, mode });
@@ -31,13 +43,12 @@ const App = () => {
     return m === "rgba" ? rgbaString() : color.hex;
   };
 
-  const copyToClipboard = (str: string) => {
-    navigator.clipboard.writeText(str);
-  };
-
   const handleColorChange = (c: ColorResult) => {
     setColor(c);
-    copyToClipboard(colorString(mode));
+    const str = mode === "rgba"
+      ? `rgba(${c.rgb.r},${c.rgb.g},${c.rgb.b},${c.rgb.a})`
+      : c.hex;
+    showCopiedMessage(str);
     vscode.postMessage({
       color: c,
       mode,
@@ -46,7 +57,8 @@ const App = () => {
   };
 
   const handleRGBAModeClick = () => {
-    copyToClipboard(colorString("rgba"));
+    const { r, g, b, a } = color.rgb;
+    showCopiedMessage(`rgba(${r},${g},${b},${a})`);
     vscode.postMessage({
       color,
       mode: "rgba",
@@ -56,7 +68,7 @@ const App = () => {
   };
 
   const handleHexModeClick = () => {
-    copyToClipboard(colorString("hex"));
+    showCopiedMessage(color.hex);
     vscode.postMessage({
       color,
       mode: "hex",
@@ -121,11 +133,36 @@ const App = () => {
           className="Color Pick"
         >
           <GithubLink link={config.repoUrl} />
-          <SketchPicker
+          <div style={{ position: "relative" }}>
+            {copiedMessage && (
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: "100%",
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  padding: "6px 14px",
+                  marginBottom: 8,
+                  background: "rgba(0,0,0,0.7)",
+                  color: "#fff",
+                  borderRadius: 4,
+                  fontSize: 13,
+                  fontFamily: "monospace",
+                  whiteSpace: "nowrap",
+                  opacity: copiedVisible ? 1 : 0,
+                  transition: "opacity 0.5s ease-out",
+                  pointerEvents: "none",
+                }}
+              >
+                {copiedMessage} copied
+              </div>
+            )}
+            <SketchPicker
             presetColors={[]}
             color={color.rgb}
             onChangeComplete={handleColorChange}
           />
+          </div>
           <Card>
             <div>
               <input

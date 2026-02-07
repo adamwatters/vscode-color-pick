@@ -80,23 +80,13 @@ const App = () => {
   return (
     <div
       style={{
-        position: "absolute",
-        top: 0,
-        right: 0,
-        bottom: 0,
-        left: 0,
+        display: "flex",
+        flexDirection: "row",
+        height: "100vh",
         overflow: "hidden",
       }}
     >
-      <div
-        style={{
-          zIndex: 2,
-          position: "absolute",
-          top: 0,
-          bottom: -10,
-          overflow: "scroll",
-        }}
-      >
+      <div style={{ overflowY: "auto" }}>
         <Search
           setSearch={setSearch}
           search={search}
@@ -105,30 +95,23 @@ const App = () => {
       </div>
       <div
         style={{
-          bottom: 0,
-          position: "absolute",
-          top: 0,
-          width: "100%",
+          flex: 1,
+          position: "relative",
           backgroundImage:
             "linear-gradient(45deg, #808080 25%, transparent 25%), linear-gradient(-45deg, #808080 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #808080 75%), linear-gradient(-45deg, transparent 75%, #808080 75%)",
           backgroundSize: "20px 20px",
           backgroundPosition: "0 0, 0 10px, 10px -10px, -10px 0px",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
         }}
       >
         <div
           style={{
-            alignItems: "center",
+            position: "absolute",
+            inset: 0,
             background: rgbaString(),
-            bottom: 0,
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
-            position: "absolute",
-            top: 0,
-            width: "100%",
+            alignItems: "center",
           }}
           className="Color Pick"
         >

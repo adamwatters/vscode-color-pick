@@ -26,12 +26,11 @@ const Color = (props: ColorProps) => {
       key={props.hex}
       style={{
         backgroundColor: props.hex,
-        fontSize: 16,
-        textShadow: "grey 1px 0 10px",
         height: focus ? 40 : 30,
         display: "flex",
-        justifyContent: "center",
         alignItems: "center",
+        justifyContent: "flex-start",
+        padding: "0 8px",
         transition: "height .2s",
         cursor: "pointer",
       }}
@@ -42,7 +41,17 @@ const Color = (props: ColorProps) => {
         if (e.key === "Enter") props.onSelect(props.hex);
       }}
     >
-      {props.name}
+      <span
+        style={{
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          color: "white",
+          fontSize: 14,
+          padding: "2px 8px",
+          borderRadius: 3,
+        }}
+      >
+        {props.name}
+      </span>
     </div>
   );
 };
@@ -76,18 +85,20 @@ const Search = (props: SearchProps) => {
   return (
     <div className="App">
       <input
-        style={{ width: 300, height: 30, fontSize: 22 }}
+        style={{ width: 260, height: 30, fontSize: 20 }}
         type="text"
         onChange={handleSearchChange}
         value={search}
         autoFocus={true}
-        placeholder="Search 18,000+ Color Names"
+        placeholder="Search 18,000+ Colors"
       />
-      <div>
-        {colors.map((color) => (
-          <Color key={color.hex} onSelect={selectColor} {...color} />
-        ))}
-      </div>
+      {colors.length > 0 && (
+        <div>
+          {colors.map((color) => (
+            <Color key={color.hex} onSelect={selectColor} {...color} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
